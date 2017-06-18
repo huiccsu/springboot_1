@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>交易</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/js/sockjs.min.js"></script>
+<script src="/js/stomp.js"></script>
+<script src="/js/jquery-1.11.1.min.js"></script>
+<script src="/js/trade.js"></script>
+<link rel="stylesheet"
+	href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body onload="connect()">
+	<table class="table table-striped">
+		<caption>操作依据</caption>
+		<thead>
+			<tr>
+				<th>买币途径</th>
+				<th>可买入人民￥</th>
+				<th>产出人民币￥</th>
+				<th>盈亏人民币￥</th>
+				<th>操作途径</th>
+				<th>实际买入量</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			
+		</tbody>
+	</table>
+</body>
+<script type="text/javascript">
+ 	var  stompClient ;
+    function connect() {
+        var socket = new SockJS('/endpointSang');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+            stompClient.subscribe('/topic/getResponse', function (response) {
+                showResponse(JSON.parse(response.body).responseMessage);
+            })
+        });
+    }
+    
+    function showResponse(message) {
+       train(message);
+    }
+</script>
+</html>
